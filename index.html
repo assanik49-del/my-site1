@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как вести диалог в конфликте | Белая презентация</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            color: #1a202c;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .presentation-wrapper {
+            max-width: 100vw;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-content {
+            max-width: 1200px;
+            padding: 0 60px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* Анимированный фон */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, rgba(1, 61, 133, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(1, 61, 133, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, rgba(1, 61, 133, 0.06) 0%, transparent 50%);
+            opacity: 0.6;
+            animation: float-bg 20s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes float-bg {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(180deg); }
+        }
+
+        /* Анимации появления */
+        .fade-in {
+            opacity: 1;
+            animation: fadeInEffect 1s ease-out;
+        }
+
+        .slide-up {
+            opacity: 1;
+            transform: translateY(0);
+            animation: slideUpEffect 0.8s ease-out;
+        }
+
+        .slide-left {
+            opacity: 1;
+            transform: translateX(0);
+            animation: slideLeftEffect 0.8s ease-out;
+        }
+
+        .slide-right {
+            opacity: 1;
+            transform: translateX(0);
+            animation: slideRightEffect 0.8s ease-out;
+        }
+
+        .scale-in {
+            opacity: 1;
+            transform: scale(1);
+            animation: scaleInEffect 0.8s ease-out;
+        }
+
+        .bounce-in {
+            opacity: 1;
+            transform: scale(1);
+            animation: bounceInEffect 1s ease-out;
+        }
+
+        @keyframes fadeInEffect {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideUpEffect {
+            0% { transform: translateY(30px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes slideLeftEffect {
+            0% { transform: translateX(-30px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes slideRightEffect {
+            0% { transform: translateX(30px); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes scaleInEffect {
+            0% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounceInEffect {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Анимации с задержкой */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+
+        .fade-in, .slide-up, .slide-left, .slide-right, .scale-in, .bounce-in {
+            animation-fill-mode: both;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: rgba(26, 32, 44, 0.6);
+            z-index: 100;
+        }
+
+        /* Слайд 1 - Титульный */
+        .title-slide {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .title-main {
+            font-size: clamp(50px, 10vw, 120px);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #1a202c, #013D85, #0056b3);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-text 3s ease infinite;
+        }
+
+        @keyframes gradient-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .title-subtitle {
+            font-size: clamp(18px, 3vw, 28px);
+            font-weight: 300;
+            color: rgba(26, 32, 44, 0.7);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        .title-icon {
+            font-size: clamp(80px, 15vw, 120px);
+            margin-bottom: 40px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                transform: scale(1);
+                filter: drop-shadow(0 0 20px rgba(1, 61, 133, 0.3));
+            }
+            50% { 
+                transform: scale(1.1);
+                filter: drop-shadow(0 0 40px rgba(1, 61, 133, 0.5));
+            }
+        }
+
+        /* Слайд 2 - Реакции */
+        .reactions-slide {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        .reactions-title {
+            font-size: clamp(28px, 5vw, 40px);
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: #013D85;
+            letter-spacing: -0.02em;
+        }
+
+        .reactions-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 40px;
+        }
+
+        .reaction-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(1, 61, 133, 0.1);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: gentle-float 6s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            max-width: 250px;
+        }
+
+        .reaction-card:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .reaction-card:nth-child(2) {
+            animation-delay: 2s;
+        }
+
+        .reaction-card:nth-child(3) {
+            animation-delay: 4s;
+        }
+
+        @keyframes gentle-float {
+            0%, 100% {
+                transform: translateY(0px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            }
+            50% {
+                transform: translateY(-8px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .reaction-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(1, 61, 133, 0.3);
+            box-shadow: 0 20px 60px rgba(1, 61, 133, 0.15);
+            animation-play-state: paused;
+        }
+
+        .reaction-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .reaction-text {
+            font-size: 16px;
+            font-weight: 500;
+            color: #374151;
+            line-height: 1.5;
+        }
+
+        .vs-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #013D85;
+            margin: 40px 0;
+        }
+
+        .mature-approach {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 60px;
+            animation: pulse-green 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-green {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.4);
+            }
+        }
+
+        .mature-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a202c;
+            line-height: 1.4;
+        }
+
+        /* Слайд 3 - Цель диалога */
+        .goal-slide {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .goal-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 700;
+            margin-bottom: 80px;
+            color: #013D85;
+        }
+
+        .goal-comparison {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            max-width: 1100px;
+            margin: 0 auto;
+            gap: 60px;
+        }
+
+        .goal-section {
+            flex: 1;
+            text-align: center;
+        }
+
+        .not-goals {
+            background: rgba(239, 68, 68, 0.05);
+            border: 2px solid rgba(239, 68, 68, 0.2);
+            border-radius: 20px;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .real-goal {
+            background: rgba(16, 185, 129, 0.05);
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            padding: 30px 20px;
+            position: relative;
+        }
+
+        .goal-section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .not-goals .goal-section-title {
+            color: #dc2626;
+        }
+
+        .real-goal .goal-section-title {
+            color: #059669;
+        }
+
+        .goal-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .goal-list li {
+            font-size: 16px;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .not-goals .goal-list li {
+            background: rgba(239, 68, 68, 0.1);
+            color: #7f1d1d;
+        }
+
+        .real-goal .goal-list li {
+            background: rgba(16, 185, 129, 0.1);
+            color: #064e3b;
+            font-weight: 600;
+        }
+
+        .goal-list li:hover {
+            transform: scale(1.05);
+        }
+
+        .not-goals .goal-list li:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .real-goal .goal-list li:hover {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .goal-highlight {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1a202c;
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 16px;
+            border: 2px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Слайд 4 - Принципы */
+        .principles-slide {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+        }
+
+        .principles-title {
+            font-size: clamp(32px, 6vw, 48px);
+            font-weight: 700;
+            margin-bottom: 80px;
+            color: #013D85;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .principle-card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid rgba(1, 61, 133, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            position: relative;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .principle-card:nth-child(1) {
+            border-left: 5px solid rgba(1, 61, 133, 0.6);
+        }
+
+        .principle-card:nth-child(2) {
+            border-left: 5px solid rgba(16, 185, 129, 0.6);
+        }
+
+        .principle-card:nth-child(3) {
+            border-left: 5px solid rgba(245, 158, 11, 0.6);
+        }
+
+        .principle-card:nth-child(4) {
+            border-left: 5px solid rgba(139, 92, 246, 0.6);
+        }
+
+        .principle-card:nth-child(5) {
+            border-left: 5px solid rgba(236, 72, 153, 0.6);
+        }
+
+        .principle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(1, 61, 133, 0.15);
+            border-color: rgba(1, 61, 133, 0.3);
+        }
+
+        .principle-number {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #1a202c, #013D85);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            color: #ffffff;
+            box-shadow: 0 4px 15px rgba(1, 61, 133, 0.3);
+        }
+
+        .principle-title-text {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1a202c;
+            margin-top: 15px;
+        }
+
+        .principle-desc {
+            font-size: 16px;
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .principle-examples {
+            background: rgba(1, 61, 133, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .principle-examples ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .principle-examples li {
+            font-size: 15px;
+            color: #4b5563;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .principle-examples li::before {
+            content: '💬';
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+        }
+
+
+
+        /* Слайд 5 - Заключение */
+        .conclusion-slide {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        }
+
+        .conclusion-icon {
+            font-size: clamp(80px, 15vw, 120px);
+            margin-bottom: 40px;
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        .conclusion-title {
+            font-size: clamp(40px, 8vw, 64px);
+            font-weight: 800;
+            margin-bottom: 40px;
+            color: #013D85;
+            letter-spacing: -0.02em;
+        }
+
+        .conclusion-text {
+            font-size: clamp(18px, 3vw, 28px);
+            color: rgba(26, 32, 44, 0.7);
+            margin-bottom: 50px;
+            line-height: 1.4;
+        }
+
+        .conclusion-highlight {
+            font-size: clamp(20px, 4vw, 32px);
+            font-weight: 600;
+            color: #1a202c;
+            padding: 40px;
+            border: 2px solid rgba(1, 61, 133, 0.2);
+            border-radius: 20px;
+            background: rgba(59, 130, 246, 0.05);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            line-height: 1.5;
+        }
+
+        .conclusion-highlight:hover {
+            transform: scale(1.05);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Навигация */
+        .nav-dots {
+            position: fixed;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(26, 32, 44, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: #3b82f6;
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .slide-content {
+                padding: 0 30px;
+            }
+            
+            .reactions-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .goal-comparison {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .principles-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .nav-dots {
+                display: none;
+            }
+        }
+
+        /* Плавная прокрутка */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            scroll-snap-align: start;
+        }
+
+        body {
+            scroll-snap-type: y mandatory;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-wrapper">
+        <!-- Навигация -->
+        <div class="nav-dots">
+            <div class="nav-dot active" onclick="scrollToSlide(0)"></div>
+            <div class="nav-dot" onclick="scrollToSlide(1)"></div>
+            <div class="nav-dot" onclick="scrollToSlide(2)"></div>
+            <div class="nav-dot" onclick="scrollToSlide(3)"></div>
+            <div class="nav-dot" onclick="scrollToSlide(4)"></div>
+        </div>
+
+        <!-- Слайд 1: Титульный -->
+        <div class="slide title-slide" id="slide-0">
+            <div class="slide-number">1/4</div>
+            <div class="slide-content">
+                <div class="title-icon bounce-in">💬</div>
+                <h1 class="title-main scale-in delay-1">КАК ВЕСТИ ДИАЛОГ В КОНФЛИКТЕ</h1>
+                <p class="title-subtitle fade-in delay-2">Зрелость начинается там, где мы не бежим, а входим в диалог</p>
+            </div>
+        </div>
+
+        <!-- Слайд 2: Реакции -->
+        <div class="slide reactions-slide" id="slide-1">
+            <div class="slide-number">2/5</div>
+            <div class="slide-content">
+                <h2 class="reactions-title slide-up">Естественные реакции в конфликте</h2>
+                <div class="reactions-container">
+                    <div class="reaction-card scale-in delay-1">
+                        <div class="reaction-icon">🛡️</div>
+                        <div class="reaction-text">Защититься</div>
+                    </div>
+                    <div class="reaction-card scale-in delay-2">
+                        <div class="reaction-icon">🤐</div>
+                        <div class="reaction-text">Замолчать</div>
+                    </div>
+                    <div class="reaction-card scale-in delay-3">
+                        <div class="reaction-icon">⚔️</div>
+                        <div class="reaction-text">Напасть</div>
+                    </div>
+                </div>
+                <div class="vs-text fade-in delay-4">VS</div>
+                <div class="mature-approach scale-in delay-5">
+                    <div class="mature-text">Зрелый подход: войти в диалог</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 3: Цель диалога -->
+        <div class="slide goal-slide" id="slide-2">
+            <div class="slide-number">3/5</div>
+            <div class="slide-content">
+                <h2 class="goal-title slide-up">Цель диалога</h2>
+                <div class="goal-comparison">
+                    <div class="goal-section scale-in delay-1">
+                        <div class="not-goals">
+                            <h3 class="goal-section-title">НЕ про это:</h3>
+                            <ul class="goal-list">
+                                <li>«Убедить»</li>
+                                <li>«Переиграть»</li>
+                                <li>«Доказать правоту»</li>
+                                <li>«Выиграть спор»</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="goal-section scale-in delay-2">
+                        <div class="real-goal">
+                            <h3 class="goal-section-title">А про это:</h3>
+                            <ul class="goal-list">
+                                <li>Понять и быть понятым</li>
+                                <li>Найти общий вектор</li>
+                                <li>Сохранить отношения</li>
+                                <li>Найти решение вместе</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="goal-highlight fade-in delay-3">
+                    Диалог — это не про то, кто прав, а про то, как двигаться дальше вместе
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4: Принципы диалога -->
+        <div class="slide principles-slide" id="slide-3">
+            <div class="slide-number">4/5</div>
+            <div class="slide-content">
+                <h2 class="principles-title slide-up">5 принципов диалога</h2>
+                <div class="principles-grid">
+                    <div class="principle-card scale-in delay-1">
+                        <div class="principle-number">1</div>
+                        <h3 class="principle-title-text">Правильный настрой</h3>
+                        <p class="principle-desc">Собеседник — партнёр, а не враг. Цель — понять и найти решение.</p>
+                        <div class="principle-examples">
+                            <ul>
+                                <li>«Я почувствовал, что…»</li>
+                                <li>«Мне не хватило…»</li>
+                                <li>«Давайте разберёмся вместе»</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-card scale-in delay-2">
+                        <div class="principle-number">2</div>
+                        <h3 class="principle-title-text">Вопросы вместо домыслов</h3>
+                        <p class="principle-desc">Не додумывай — спрашивай и уточняй.</p>
+                        <div class="principle-examples">
+                            <ul>
+                                <li>«Как ты это видишь?»</li>
+                                <li>«Что было важно для тебя?»</li>
+                                <li>«Что поможет нам двигаться дальше?»</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-card scale-in delay-3">
+                        <div class="principle-number">3</div>
+                        <h3 class="principle-title-text">Поиск общего</h3>
+                        <p class="principle-desc">Признавай ошибки и ищи точки соприкосновения.</p>
+                        <div class="principle-examples">
+                            <ul>
+                                <li>В чём мы согласны?</li>
+                                <li>Что важно нам обоим?</li>
+                                <li>Как учесть интересы всех?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-card scale-in delay-4">
+                        <div class="principle-number">4</div>
+                        <h3 class="principle-title-text">Говори о себе</h3>
+                        <p class="principle-desc">Используй «Я-сообщения» вместо обвинений.</p>
+                        <div class="principle-examples">
+                            <ul>
+                                <li>«Я расстроился, когда…»</li>
+                                <li>«Мне важно, чтобы…»</li>
+                                <li>«Я вижу это так…»</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="principle-card scale-in delay-5">
+                        <div class="principle-number">5</div>
+                        <h3 class="principle-title-text">Слушай активно</h3>
+                        <p class="principle-desc">Не готовь ответ, пока собеседник говорит. Слушай, чтобы понять.</p>
+                        <div class="principle-examples">
+                            <ul>
+                                <li>«Правильно ли я понял…»</li>
+                                <li>«Ты имеешь в виду…»</li>
+                                <li>«Расскажи подробнее»</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: Заключение -->
+        <div class="slide conclusion-slide" id="slide-4">
+            <div class="slide-number">5/5</div>
+            <div class="slide-content">
+                <div class="conclusion-icon bounce-in">🎯</div>
+                <h2 class="conclusion-title scale-in delay-1">Зрелая команда</h2>
+                <p class="conclusion-text fade-in delay-2">
+                    Диалог — это не монолог вслух.<br>
+                    Это двустороннее движение.<br>
+                    Где есть место и для себя, и для другого.
+                </p>
+                <div class="conclusion-highlight slide-up delay-3">
+                    Зрелая команда — не та, где нет напряжения.<br>
+                    А та, где умеют говорить, даже когда сложно.<br><br>
+                    Где конфликт не заметают — а развязывают.<br>
+                    Через уважение. Через смысл. Через разговор.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Навигация по слайдам
+        function scrollToSlide(index) {
+            const slide = document.getElementById(`slide-${index}`);
+            slide.scrollIntoView({ behavior: 'smooth' });
+            
+            // Обновляем активную точку
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        // Отслеживание текущего слайда при скролле
+        window.addEventListener('scroll', () => {
+            const slides = document.querySelectorAll('.slide');
+            const scrollPosition = window.scrollY + window.innerHeight / 2;
+            
+            slides.forEach((slide, index) => {
+                const slideTop = slide.offsetTop;
+                const slideBottom = slideTop + slide.offsetHeight;
+                
+                if (scrollPosition >= slideTop && scrollPosition < slideBottom) {
+                    document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
+                }
+            });
+        });
+
+        // Клавиатурная навигация
+        document.addEventListener('keydown', (e) => {
+            const currentActive = document.querySelector('.nav-dot.active');
+            const currentIndex = Array.from(document.querySelectorAll('.nav-dot')).indexOf(currentActive);
+            
+            if (e.key === 'ArrowDown' && currentIndex < 4) {
+                scrollToSlide(currentIndex + 1);
+            } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+                scrollToSlide(currentIndex - 1);
+            }
+        });
+
+        // Анимации при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Презентация о диалоге в конфликте загружена');
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972fd2c4d410e4c6',t:'MTc1NTgzOTAwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
